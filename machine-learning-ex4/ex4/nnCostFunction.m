@@ -61,24 +61,43 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+eye_matrix = eye(num_labels);
+y_matrix = eye_matrix(y,:);
 
+% 2 - Perform the forward propagation:
+a1 = [ones(m, 1) X];
+z2 = a1 * Theta1';
+a2 = [ones(m, 1) sigmoid(z2)];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
+unregularizedCost = (-1 / m) * sum(sum( y_matrix .* log(a3) + (1 - y_matrix)... 
+.* log(1 - a3)));
 
+%Cost Regularization:
+unbiasedTheta1 = Theta1(:,2:end);
+unbiasedTheta2 = Theta2(:,2:end);
+sum1 = sum(sum(unbiasedTheta1.^2));
+sum2 = sum(sum(unbiasedTheta2.^2));
+regularizedCost = (lambda / (2 * m)) * (sum1 + sum2);
 
+J = unregularizedCost + regularizedCost;
 
+d3 = a3 - y_matrix;
+d2 = (d3 * unbiasedTheta2) .* sigmoidGradient(z2);
+Delta1 = d2' * a1;
+Delta2 = d3' * a2;
 
+Theta1_grad = (1 / m) *  Delta1;
+Theta2_grad = (1 / m) *  Delta2;
 
+Theta1(:,1) = 0;
+Theta2(:,1) = 0;
+scaledTheta1 = (lambda / m) * Theta1;
+scaledTheta2 = (lambda / m) * Theta2;
 
-
-
-
-
-
-
-
-
-
-
+Theta1_grad = Theta1_grad + scaledTheta1;
+Theta2_grad = Theta2_grad + scaledTheta2;
 
 % -------------------------------------------------------------
 
