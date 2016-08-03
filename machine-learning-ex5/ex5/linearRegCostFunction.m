@@ -18,17 +18,18 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
+h = X * theta;
+error = h - y;
+theta(1) = 0;
+unregularizedCost = (1 / (2 * m)) * sum(error.^2);
+regularizedCost = (lambda / (2 * m)) * sum(theta.^2);
 
+J = unregularizedCost + regularizedCost;
 
+unregularizedGrad = (1 / m) * (X' * error);
+regularizedGrad = (lambda / m) * theta;
 
-
-
-
-
-
-
-
-
+grad = unregularizedGrad + regularizedGrad;
 
 % =========================================================================
 

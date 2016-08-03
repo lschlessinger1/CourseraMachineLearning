@@ -15,10 +15,10 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
-
-
-
-
+% column i holds the values of X.^i
+for i = 1:p,
+    X_poly(:,i) = X .^ i;
+end
 
 % =========================================================================
 
