@@ -39,21 +39,22 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
+predictedMovieRatings = X * Theta';
+movieRatingError = predictedMovieRatings - Y;
+errorFactor = movieRatingError .* R;
+unregularizedCost = .5 * sum(sum(errorFactor .^ 2));
 
+regularizedCost = (lambda / 2) * (sum(sum(Theta .^ 2)) + sum(sum(X .^ 2)));
 
+unregularizedXGrad = errorFactor * Theta;
+regularizedXGrad = lambda * X;
 
+unregularizedThetaGrad = errorFactor' * X;
+regularizedThetaGrad = lambda * Theta;
 
-
-
-
-
-
-
-
-
-
-
-
+J = unregularizedCost + regularizedCost;
+X_grad = unregularizedXGrad + regularizedXGrad;
+Theta_grad = unregularizedThetaGrad + regularizedThetaGrad; 
 
 % =============================================================
 
