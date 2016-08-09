@@ -21,11 +21,17 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+distance = zeros(size(X,1), K); % m x k
 
+for k = 1:K,
+    centroid = centroids(k, :);
+    dist = bsxfun(@minus, X, centroid);
+	squaredDists = sum(dist .^ 2, 2);
+    distance(:,k) = squaredDists;
+end
 
-
-
-
+[~,I] = min(distance,[],2); % m x 1
+idx = I;
 
 % =============================================================
 
